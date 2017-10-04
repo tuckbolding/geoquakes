@@ -1,5 +1,6 @@
 // define globals
 var weekly_quakes_endpoint = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
+var monthly_quakes_endpoint = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.geojson";
 
 $(document).ready(function() {
   console.log("Let's get coding!");
@@ -13,11 +14,15 @@ $(document).ready(function() {
   });
 
   function onSuccess(json) {
+    var currentTime = Date.now();
+
     for (var i=0; i<json.features.length; i++) {
-    $("#info").append('<p>'+json.features[i].properties.title+'</p>');
-    // json.data.forEach(function(title,i)) {
-    //   $(".quake_titles").append($("<h2>"+'+json.features[i].properties.title+'</h2>');
-  }}
+      var timeDiff = Math.ceil((currentTime - json.features[i].properties.time)/60/60/1000);
+      $("#info").append('<p>'+json.features[i].properties.title.split(" of ")[1]+" -- "+timeDiff+" hrs ago"+'</p>');
+      // json.data.forEach(function(title,i)) {
+      //   $(".quake_titles").append($("<h2>"+'+json.features[i].properties.title+'</h2>');
+    }
+  }
 
   function onError(xhr, status, errorThrown) {
     alert("Sorry, there was a problem!");
@@ -43,11 +48,21 @@ $(document).ready(function() {
         // center: new google.maps.LatLng(coords[0], coords[1]),
         mapTypeId: 'terrain'
       });
+
+// var customMarker = 'images/earthquake.png';
+
+//       var icons = {
+      //     earthquake: {
+      //       icon: 'images/earthquake.png'
+      //     }
+      //   }
+
       for (var i=0; i<json.features.length; i++) {
         var coords = json.features[i].geometry.coordinates;
         var latLng = new google.maps.LatLng(coords[1],coords[0]);
         var marker = new google.maps.Marker({
           position: latLng,
+          // icon: customMarker,
           map: map
         });
       }
