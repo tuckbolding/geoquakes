@@ -35,12 +35,12 @@ $(document).ready(function() {
   });
 
   var map;
-  function initMap() {
+  function initMap(json) {
         map = new google.maps.Map(document.getElementById('map'), {
-          // zoom: 2,
-          // center: new google.maps.LatLng(2.8, -187.3),
-        zoom: coords[2],
-        center: new google.maps.LatLng(coords[0], coords[1]),
+          zoom: 2,
+          center: new google.maps.LatLng(2.8, -187.3),
+        // zoom: coords[2],
+        // center: new google.maps.LatLng(coords[0], coords[1]),
         mapTypeId: 'terrain'
       });
       for (var i=0; i<json.features.length; i++) {
